@@ -1,7 +1,7 @@
 package com.example.metier;
 
 import com.example.dao.IDao;
-import com.example.entities.Product;
+import com.example.entities.Category;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,48 +11,47 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class ProductDaoImpl implements IDao<Product> {
+public class CategoryDaoImpl implements IDao<Category> {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
     @Transactional
-    public boolean create(Product product) {
+    public boolean create(Category category) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(product);
-        return true;
-    }
-
-    // Méthodes restantes à implémenter :
-    @Override
-    @Transactional
-    public boolean delete(Product product) {
-        sessionFactory.getCurrentSession().delete(product);
+        session.save(category);
         return true;
     }
 
     @Override
     @Transactional
-    public boolean update(Product product) {
-        sessionFactory.getCurrentSession().update(product);
+    public boolean delete(Category category) {
+        sessionFactory.getCurrentSession().delete(category);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean update(Category category) {
+        sessionFactory.getCurrentSession().update(category);
         return true;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Product findById(int id) {
+    public Category findById(int id) {
         return sessionFactory.getCurrentSession()
-                .createQuery("from Product p left join fetch p.category where p.id = :id", Product.class)
+                .createQuery("from Category c left join fetch c.products where c.id = :id", Category.class)
                 .setParameter("id", id)
                 .uniqueResult();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAll() {
+    public List<Category> findAll() {
         return sessionFactory.getCurrentSession()
-                .createQuery("from Product p left join fetch p.category", Product.class)
+                .createQuery("from Category c left join fetch c.products", Category.class)
                 .list();
     }
 }

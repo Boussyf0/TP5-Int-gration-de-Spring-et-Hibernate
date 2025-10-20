@@ -7,7 +7,7 @@
   <groupId>com.example</groupId>
   <artifactId>spring-hibernate-demo</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>spring-hibernate-demo</name>
   <url>http://maven.apache.org</url>
@@ -68,6 +68,60 @@
       <artifactId>validation-api</artifactId>
       <version>2.0.1.Final</version>
     </dependency>
+
+    <!--  Spring MVC pour l'interface web -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.3.22</version>
+    </dependency>
+
+    <!--  Servlet API -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--  JSTL pour les vues JSP -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <!--  JSP API -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--  Spring Test pour les tests d'intégration -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.22</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--  Mockito pour les mocks dans les tests -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.6.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--  H2 Database pour les tests -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>2.1.214</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -83,13 +137,38 @@
         </configuration>
       </plugin>
 
-      <!--  Plugin d'exécution pour lancer ton App.java -->
+      <!--  Plugin d'exécution pour lancer les applications -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>com.example.App</mainClass>
+          <mainClass>com.example.TestHibernate</mainClass>
+        </configuration>
+      </plugin>
+
+      <!--  Plugin Maven War pour le packaging web -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
+        <configuration>
+          <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
+        </configuration>
+      </plugin>
+
+      <!--  Plugin Jetty pour le serveur de développement -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.4.48.v20220622</version>
+        <configuration>
+          <httpConnector>
+            <port>8080</port>
+          </httpConnector>
+          <webApp>
+            <contextPath>/spring-hibernate-demo</contextPath>
+          </webApp>
         </configuration>
       </plugin>
     </plugins>
